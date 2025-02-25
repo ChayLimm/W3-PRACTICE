@@ -21,9 +21,10 @@ class LocationPickerField extends StatelessWidget {
       title: Text(selectedLocation,style: BlaTextStyles.button.copyWith(color:BlaColors.neutral, ),),
       onTap:() {
         // open a full screen dialog of location picker
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>  LocationPickerScreen(
+       Navigator.of(context).push(AnimationUtils.createBottomToTopRoute(
+          LocationPickerScreen(
             onSelectLocation: onSelectLocation,
-            ) 
+            )
           )
         );
       },
