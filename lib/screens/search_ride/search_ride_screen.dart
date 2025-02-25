@@ -17,6 +17,7 @@ class SearchRideScreen extends StatefulWidget {
 class _SearchRideScreenState extends State<SearchRideScreen> {
   
   late List<Ride> matchRide;
+  late bool isNotFound;
   ///
   ///Prepare render data
   ///
@@ -36,6 +37,9 @@ void initState() {
           ride.departureDate.year == widget.ridePref.departureDate.year
           ) // Ensure full date match
       .toList();  
+  if(matchRide.length == 0){
+    isNotFound = true;
+  }
 }
 
 
@@ -49,12 +53,22 @@ void initState() {
           children: [
             RidePrefTile(ridePref: widget.ridePref),
             SizedBox(height: BlaSpacings.xl,),
-            Expanded(
-              child: ListView.builder(
-                itemCount: matchRide.length,
-                itemBuilder: (context, index) => RideCard(ride: matchRide[index]),
-              ),
-            )
+            /// if match, then show the list of matchRide
+            if(!isNotFound)...[
+              Expanded(
+                child: ListView.builder(
+                  itemCount: matchRide.length,
+                  itemBuilder: (context, index) => RideCard(ride: matchRide[index]),
+                ),
+              )],
+            // else its show not found
+            if(isNotFound)...[
+              Center(
+                child: Text(
+                  "No Ride are available", style: BlaTextStyles.body,
+                ),
+              )
+            ]
           ],
         ),
       ),

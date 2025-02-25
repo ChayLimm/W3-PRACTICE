@@ -91,12 +91,11 @@ class _RidePrefFormState extends State<RidePrefForm> {
     });
   }
 
-  void onSelectPassenger(int passenger) {
+  void onSelectSeats(int newSeats) {
     setState(() {
-      passenger = passenger;
+      requestedSeats = newSeats;
     });
   }
-
   // Search button and validor for the form
 
   void onSearch() async {
@@ -165,7 +164,7 @@ class _RidePrefFormState extends State<RidePrefForm> {
           ),
           BlaDivider(),
           // 4 - Select seats Listitle, default 1
-          SeatPickerField(onSelectSeats: onSelectPassenger),
+          SeatPickerField(onSelectSeats: onSelectSeats, initSeats: requestedSeats,),
           const SizedBox(
             height: BlaSpacings.s,
           ),
