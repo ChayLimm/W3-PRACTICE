@@ -143,6 +143,11 @@ class _RidePrefFormState extends State<RidePrefForm> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Row(mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(onPressed: swapLocations, icon: Icon(Icons.swap_vert,color: BlaColors.primary,))
+            ],
+          ),
           // 1 - Leaving from Listtile
           LocationPickerField(
             hint: "Leaving from",
