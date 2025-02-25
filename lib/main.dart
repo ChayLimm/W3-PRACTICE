@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:week_3_blabla_project/test/test.dart';
 import 'screens/ride_pref/ride_pref_screen.dart';
 import 'theme/theme.dart';
+
+// import 'package:week_3_blabla_project/test/test.dart';
+
 
 void main() {
   runApp(const MyApp());
