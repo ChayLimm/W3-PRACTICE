@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:week_3_blabla_project/model/ride/ride.dart';
+import 'package:week_3_blabla_project/screens/location_picker/location_picker_screen.dart';
+import 'package:week_3_blabla_project/screens/search_ride/search_ride_screen.dart';
+import 'package:week_3_blabla_project/utils/animations_util.dart';
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
 
@@ -39,15 +43,14 @@ class _RidePrefFormState extends State<RidePrefForm> {
   // Initialize the Form attributes
   // ----------------------------------
 
-
   @override
   void initState() {
     super.initState();
-    // TODO 
+    // TODO
     bool isInitRidePref = widget.initRidePref != null;
-    if(isInitRidePref){
+    if (isInitRidePref) {
       departure = widget.initRidePref!.departure;
-      arrival   = widget.initRidePref!.arrival;
+      arrival = widget.initRidePref!.arrival;
       requestedSeats = widget.initRidePref!.requestedSeats;
       departureDate = widget.initRidePref!.departureDate;
     }
@@ -65,48 +68,73 @@ class _RidePrefFormState extends State<RidePrefForm> {
       departure = tempArrival;
       arrival = tempDeparture;
     });
-  }  
-  
+  }
+
   //Function to change each value
 
-  void onSelectArrival(Location location){
+  void onSelectArrival(Location location) {
     setState(() {
       arrival = location;
     });
   }
-  void onSelectDeparture(Location location){
+
+  void onSelectDeparture(Location location) {
     setState(() {
       departure = location;
     });
   }
-  void onSelectDepartureDate(DateTime dateTime){
+
+  void onSelectDepartureDate(DateTime dateTime) {
     setState(() {
       departureDate = dateTime;
       print("function trigger");
     });
   }
-  void onSelectPassenger(int passenger){
+
+  void onSelectPassenger(int passenger) {
     setState(() {
       passenger = passenger;
     });
   }
-  
+
   // Search button and validor for the form
-  
-  void onSearch(){
-    //validate each variable
-    if(departure == null || arrival == null){
+
+  void onSearch() async {
+    //validate depature, if null show location picker;
+    if (departure == null) {
       //show the full screen dialog of select location
-    }else {
-      ///push to available ride
+      Navigator.of(context)
+          .push(AnimationUtils.createBottomToTopRoute(LocationPickerScreen(
+        onSelectLocation: onSelectDeparture,
+      )));
+      //validate arrival, if null show location picker;
+    } else if (arrival == null) {
+      //show the full screen dialog of select location
+      Navigator.of(context)
+          .push(AnimationUtils.createBottomToTopRoute(LocationPickerScreen(
+        onSelectLocation: onSelectArrival,
+      )));
+    } else {
+      RidePref ridePref = RidePref(
+          departure: departure!,
+          departureDate: departureDate,
+          arrival: arrival!,
+          requestedSeats: requestedSeats);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SearchRideScreen(
+                    ridePref: ridePref,
+                  )
+                )
+              );
     }
   }
-
 
   // ----------------------------------
   // Compute the widgets rendering
   // ----------------------------------
-  
+
   // ----------------------------------
   // Build the widgets
   // ----------------------------------
@@ -115,22 +143,36 @@ class _RidePrefFormState extends State<RidePrefForm> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [ 
+        children: [
           // 1 - Leaving from Listtile
-          LocationPickerField(hint: "Leaving from",initLocation: departure, onSelectLocation:onSelectDeparture,), 
-          BlaDivider(),    
+          LocationPickerField(
+            hint: "Leaving from",
+            initLocation: departure,
+            onSelectLocation: onSelectDeparture,
+          ),
+          BlaDivider(),
           // 2 - Going to Listtile
-          LocationPickerField(hint: "Going to",initLocation: arrival, onSelectLocation:onSelectArrival,),   
-          BlaDivider(),     
+          LocationPickerField(
+            hint: "Going to",
+            initLocation: arrival,
+            onSelectLocation: onSelectArrival,
+          ),
+          BlaDivider(),
           // 3 - Select date Listtile, default today
-          DatePickerField(initDateTime: departureDate,onSelectDate: onSelectDepartureDate,),  
+          DatePickerField(
+            initDateTime: departureDate,
+            onSelectDate: onSelectDepartureDate,
+          ),
           BlaDivider(),
           // 4 - Select seats Listitle, default 1
           SeatPickerField(onSelectSeats: onSelectPassenger),
-          const SizedBox(height: BlaSpacings.s,),
-          BlaButton(type: ButtonType.primary, title: "Search", onButtonClick: onSearch)
-          
-      ]
-    );
+          const SizedBox(
+            height: BlaSpacings.s,
+          ),
+          BlaButton(
+              type: ButtonType.primary,
+              title: "Search",
+              onButtonClick: onSearch)
+        ]);
   }
 }
