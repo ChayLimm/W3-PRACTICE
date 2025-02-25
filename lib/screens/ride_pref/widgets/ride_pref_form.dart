@@ -1,7 +1,15 @@
- 
+import 'package:flutter/material.dart';
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
-import 'package:flutter/material.dart';
+
+// UI Components
+import 'package:week_3_blabla_project/theme/theme.dart';
+import 'package:week_3_blabla_project/widgets/button/bla_button.dart';
+import 'package:week_3_blabla_project/widgets/display/bla_divider.dart';
+import 'package:week_3_blabla_project/widgets/inputs/date_picker_field.dart';
+import 'package:week_3_blabla_project/widgets/inputs/location_picker_field.dart';
+import 'package:week_3_blabla_project/widgets/inputs/seats_picker_field.dart';
+
 ///
 /// A Ride Preference From is a view to select:
 ///   - A depcarture location
@@ -23,32 +31,82 @@ class RidePrefForm extends StatefulWidget {
 
 class _RidePrefFormState extends State<RidePrefForm> {
   Location? departure;
-  late DateTime departureDate;
+  DateTime departureDate = DateTime.now();
   Location? arrival;
-  late int requestedSeats;
-
-
+  int requestedSeats = 1;
 
   // ----------------------------------
   // Initialize the Form attributes
   // ----------------------------------
 
+
   @override
   void initState() {
     super.initState();
     // TODO 
+    bool isInitRidePref = widget.initRidePref != null;
+    if(isInitRidePref){
+      departure = widget.initRidePref!.departure;
+      arrival   = widget.initRidePref!.arrival;
+      requestedSeats = widget.initRidePref!.requestedSeats;
+      departureDate = widget.initRidePref!.departureDate;
+    }
   }
 
   // ----------------------------------
   // Handle events
   // ----------------------------------
- 
+
+// Swap location funtion
+  void swapLocations() {
+    final tempDeparture = departure;
+    final tempArrival = arrival;
+    setState(() {
+      departure = tempArrival;
+      arrival = tempDeparture;
+    });
+  }  
+  
+  //Function to change each value
+
+  void onSelectArrival(Location location){
+    setState(() {
+      arrival = location;
+    });
+  }
+  void onSelectDeparture(Location location){
+    setState(() {
+      departure = location;
+    });
+  }
+  void onSelectDepartureDate(DateTime dateTime){
+    setState(() {
+      departureDate = dateTime;
+      print("function trigger");
+    });
+  }
+  void onSelectPassenger(int passenger){
+    setState(() {
+      passenger = passenger;
+    });
+  }
+  
+  // Search button and validor for the form
+  
+  void onSearch(){
+    //validate each variable
+    if(departure == null || arrival == null){
+      //show the full screen dialog of select location
+    }else {
+      ///push to available ride
+    }
+  }
+
 
   // ----------------------------------
   // Compute the widgets rendering
   // ----------------------------------
   
-
   // ----------------------------------
   // Build the widgets
   // ----------------------------------
@@ -58,7 +116,21 @@ class _RidePrefFormState extends State<RidePrefForm> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [ 
- 
-        ]);
+          // 1 - Leaving from Listtile
+          LocationPickerField(hint: "Leaving from",initLocation: departure, onSelectLocation:onSelectDeparture,), 
+          BlaDivider(),    
+          // 2 - Going to Listtile
+          LocationPickerField(hint: "Going to",initLocation: arrival, onSelectLocation:onSelectArrival,),   
+          BlaDivider(),     
+          // 3 - Select date Listtile, default today
+          DatePickerField(initDateTime: departureDate,onSelectDate: onSelectDepartureDate,),  
+          BlaDivider(),
+          // 4 - Select seats Listitle, default 1
+          SeatPickerField(onSelectSeats: onSelectPassenger),
+          const SizedBox(height: BlaSpacings.s,),
+          BlaButton(type: ButtonType.primary, title: "Search", onButtonClick: onSearch)
+          
+      ]
+    );
   }
 }
