@@ -3,13 +3,16 @@ import 'package:week_3_blabla_project/model/ride_pref/ride_pref.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
 import 'package:week_3_blabla_project/utils/date_time_util.dart';
 
-class RidePrefTile extends StatelessWidget {
+class RidePrefBar extends StatelessWidget {
   final RidePref ridePref;
-  const RidePrefTile({super.key, required this.ridePref});
+  final VoidCallback onPressed;
+  final VoidCallback onFilterPressed;
+  const RidePrefBar({super.key, required this.ridePref, required this.onPressed, required this.onFilterPressed});
 
   ///
   /// prepare the format of the title and subtitle 
   /// 
+  
   String get title => "${ridePref.departure.name} → ${ridePref.arrival.name}";
   String get subTitle =>"${DateTimeUtils.formatDateTime(ridePref.departureDate)},  ${ridePref.requestedSeats} passenger${ridePref.requestedSeats > 1 ? "s" : ""}";
 
@@ -30,10 +33,15 @@ class RidePrefTile extends StatelessWidget {
             Navigator.pop(context);
             }
           ),
+          onTap: onPressed,
           title: Text(title,style: BlaTextStyles.button.copyWith(color: BlaColors.neutral,)),
           subtitle: Text(subTitle,style: BlaTextStyles.button.copyWith(color: BlaColors.neutralLight,),),
-          trailing: Text("Filter",style: BlaTextStyles.button.copyWith(color: BlaColors.primary,fontWeight: FontWeight.bold),)
+          trailing: TextButton(
+            onPressed: onFilterPressed,
+            child: Text( "Filter",style: BlaTextStyles.button.copyWith(color: BlaColors.primary,fontWeight: FontWeight.bold)),
+          )
       ),
     );
   }
 }
+

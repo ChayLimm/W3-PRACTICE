@@ -18,6 +18,7 @@ class _SearchRideScreenState extends State<SearchRideScreen> {
   
   late List<Ride> matchRide;
   late bool isNotFound;
+  
   ///
   ///Prepare render data
   ///
@@ -28,22 +29,16 @@ void initState() {
   ///
   /// Compare and find the match ride
   /// 
-  matchRide = RidesService.availableRides
-      .where((ride) =>
-          ride.departureLocation.name == widget.ridePref.departure.name &&
-          ride.arrivalLocation.name == widget.ridePref.arrival.name &&
-          ride.departureDate.day == widget.ridePref.departureDate.day &&
-          ride.departureDate.month == widget.ridePref.departureDate.month &&
-          ride.departureDate.year == widget.ridePref.departureDate.year
-          ) // Ensure full date match
-      .toList();  
-  if(matchRide.length == 0){
-    isNotFound = true;
-  }
+  matchRide = RidesService.getRidesFor(widget.ridePref);
 }
 
+  void onFilterPressed(){
+    print("Onfilter");
+  }
+  void onRidePredPressed(){
+    print("open pref top modal");
+  }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +46,11 @@ void initState() {
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            RidePrefTile(ridePref: widget.ridePref),
+            RidePrefBar(
+              ridePref: widget.ridePref,
+              onFilterPressed: onFilterPressed,
+              onPressed: onRidePredPressed,
+              ),
             SizedBox(height: BlaSpacings.xl,),
             /// if match, then show the list of matchRide
             if(!isNotFound)...[

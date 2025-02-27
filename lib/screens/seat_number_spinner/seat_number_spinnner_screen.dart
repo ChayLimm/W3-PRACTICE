@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
-import 'package:week_3_blabla_project/widgets/button/bla_button.dart';
+import 'package:week_3_blabla_project/widgets/actions/bla_button.dart';
 
 class SeatNumberSpinnnerScreen extends StatefulWidget {
-  // this is onchange function that will call when the number change
-  final Function(int) onChange;
-  final int? initSeats;
+  final int initSeats;
   const SeatNumberSpinnnerScreen(
-      {super.key, this.initSeats = 1, required this.onChange});
+      {super.key,required this.initSeats});
 
   @override
   State<SeatNumberSpinnnerScreen> createState() =>
@@ -21,7 +19,7 @@ class _SeatNumberSpinnnerScreenState extends State<SeatNumberSpinnnerScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    currentIndex = widget.initSeats ?? 1;
+    currentIndex = widget.initSeats;
   }
 
   ///
@@ -47,8 +45,7 @@ class _SeatNumberSpinnnerScreenState extends State<SeatNumberSpinnnerScreen> {
 
 // confirm the change
   void confirm() {
-    widget.onChange(currentIndex);
-    Navigator.pop(context);
+    Navigator.pop(context,currentIndex);
   }
 
   ///
@@ -121,8 +118,8 @@ class _SeatNumberSpinnnerScreenState extends State<SeatNumberSpinnnerScreen> {
                   height: 44,
                   child: BlaButton(
                       type: ButtonType.primary,
-                      title: "Confirm",
-                      onButtonClick: confirm)),
+                      text: "Confirm",
+                      onPressed: confirm)),
             )
           ],
         ),

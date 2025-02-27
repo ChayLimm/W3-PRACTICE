@@ -13,15 +13,15 @@ class BlaButton extends StatelessWidget {
   
   final ButtonType type; //type of button you want yo use (primary, secondary, tertiary)
   final IconData? icon; //icon to display in button
-  final String title; // button label
-  final VoidCallback onButtonClick; // event on click
+  final String text; // button label
+  final VoidCallback onPressed; // event on click
 
   const BlaButton({
     super.key,
     required this.type,
     this.icon,
-    required this.title,
-    required this.onButtonClick,
+    required this.text,
+    required this.onPressed,
   });
 
   @override
@@ -53,7 +53,7 @@ class BlaButton extends StatelessWidget {
         break;
     }
     return ElevatedButton(
-      onPressed: onButtonClick,
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         elevation: elevation,
@@ -64,7 +64,7 @@ class BlaButton extends StatelessWidget {
         children: [
           if (icon != null) Icon(icon, size: 16, color: iconColor),
           if (icon != null) const SizedBox(width: BlaSpacings.s),
-          Text(title, style: BlaTextStyles.button.copyWith(color: textColor)),
+          Text(text, style: BlaTextStyles.button.copyWith(color: textColor)),
         ],
       ),
     );

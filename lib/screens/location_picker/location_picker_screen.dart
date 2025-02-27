@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:week_3_blabla_project/model/ride/locations.dart';
 import 'package:week_3_blabla_project/screens/location_picker/widgets/location_tile.dart';
+import 'package:week_3_blabla_project/screens/location_picker/widgets/search_bar.dart';
 import 'package:week_3_blabla_project/service/locations_service.dart';
 import 'package:week_3_blabla_project/theme/theme.dart';
-import 'package:week_3_blabla_project/widgets/inputs/bla_search_bar.dart';
 
 class LocationPickerScreen extends StatefulWidget {
   //Function to modify the parent locotion
-  final Function(Location) onSelectLocation ;
-  const LocationPickerScreen({super.key, required this.onSelectLocation});
+  const LocationPickerScreen({super.key});
 
   @override
   State<LocationPickerScreen> createState() => _LocationPickerScreenState();
@@ -29,8 +28,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   }
   //hanld when use select one of the listed location while searching
   void onSelectLocation(Location location){
-    widget.onSelectLocation(location);
-    Navigator.pop(context);
+    Navigator.pop(context,location);
   }
   
   // ----------------------------------
@@ -71,4 +69,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     );
   }
 }
+
+
+
 
